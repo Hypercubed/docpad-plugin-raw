@@ -1,0 +1,36 @@
+{
+  "name": "docpad-plugin-raw",
+  "version": "0.1.0",
+  "description": "DocPad plugin that copies /raw directory to /out",
+  "homepage": "https://github.com/hypercubed/docpad-plugin-raw",
+  "keywords": [
+    "docpad",
+    "docpad-plugin",
+    "large files"
+  ],
+  "author": "Copyright holders name <J. Harshbarger> ()",
+  "maintainers": [
+    "J. Harshbarger <> (hypercubed)"
+  ],
+  "contributors": [
+    "J. Harshbarger <> (hypercubed)"
+  ],
+  "bugs": {
+    "url": "https://github.com/hypercubed/docpad-plugin-raw/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/hypercubed/docpad-plugin-raw.git"
+  },
+  "engines": {
+    "node": ">=0.8",
+    "docpad": ">=6"
+  },
+  "dependencies": {
+    "bal-util": "2.x"
+  },
+  "devDependencies": {
+    "coffee-script": "~1.6.2"
+  },
+  "main": "./out/raw.plugin.js"
+}
