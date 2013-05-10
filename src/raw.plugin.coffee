@@ -15,7 +15,7 @@ module.exports = (BasePlugin) ->
             # the trailing / indicates to cp that the files of this directory should be copied over
             # rather than the directory itself
 
-            command = ['cp', '-Rn', rawPath, config.outPath+'/']
+            command = ['cp', '-Rnl', rawPath, config.outPath+'/']  # Hard links, is this a good idea?
             docpad.log('debug', 'Copying raw directory')
             balUtil.spawn command, {output:true}, (err) ->
                 # return next(err)  if err

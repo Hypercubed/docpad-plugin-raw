@@ -23,7 +23,7 @@
         config = docpad.getConfig();
         balUtil = require('bal-util');
         rawPath = config.srcPath + '/raw/*';
-        command = ['cp', '-Rn', rawPath, config.outPath + '/'];
+        command = ['cp', '-Rnl', rawPath, config.outPath + '/'];
         docpad.log('debug', 'Copying raw directory');
         return balUtil.spawn(command, {
           output: true
