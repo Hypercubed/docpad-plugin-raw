@@ -8,12 +8,13 @@
     "docpad-plugin",
     "large files"
   ],
-  "author": "Copyright holders name <J. Harshbarger> ()",
+  "author": "J. Harshbarger <> (https://github.com/hypercubed)",
   "maintainers": [
-    "J. Harshbarger <> (hypercubed)"
+    "J. Harshbarger <> (https://github.com/hypercubed)"
   ],
   "contributors": [
-    "J. Harshbarger <> (hypercubed)"
+    "J. Harshbarger <> (https://github.com/hypercubed)",
+    "Benjamin Lupton <b@lupton.cc> (https://github.com/balupton)"
   ],
   "bugs": {
     "url": "https://github.com/hypercubed/docpad-plugin-raw/issues"
