@@ -32,5 +32,8 @@
   "devDependencies": {
     "coffee-script": "~1.6.2"
   },
-  "main": "./out/raw.plugin.js"
+  "main": "./out/raw.plugin.js",
+  "scripts": {
+		"test": "node ./out/raw.test.js"
+	}
 }
