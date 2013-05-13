@@ -30,11 +30,16 @@
           rawPath = config.srcPath + '/raw/*';
           outPath = config.outPath + '/';
         }
-        if (winNotCygwin) {
-          command = ['xcopy', '/E', rawPath, outPath];
+        if (config.plugins.raw.command) {
+          command = config.plugins.raw.command;
         } else {
-          command = ['cp', '-Rnl', rawPath, outPath];
+          if (winNotCygwin) {
+            command = ['xcopy', '/e', '/q'];
+          } else {
+            command = ['cp', '-Rn'];
+          }
         }
+        command = command.concat([rawPath, outPath]);
         docpad.log('debug', 'Copying raw directory');
         return balUtil.spawn(command, {
           output: true
