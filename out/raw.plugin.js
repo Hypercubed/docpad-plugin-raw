@@ -17,17 +17,31 @@
       raw.prototype.name = 'raw';
 
       raw.prototype.writeAfter = function(opts, next) {
-        var balUtil, command, config, docpad, rawPath;
+        var balUtil, command, config, docpad, outPath, rawPath, winNotCygwin;
 
         docpad = this.docpad;
         config = docpad.getConfig();
         balUtil = require('bal-util');
-        rawPath = config.srcPath + '/raw/*';
-        command = ['cp', '-Rnl', rawPath, config.outPath + '/'];
+        winNotCygwin = /win/.test(process.platform) && !/cygwin/.test(process.env.PATH);
+        if (winNotCygwin) {
+          rawPath = config.srcPath + '\\raw\\*';
+          outPath = config.outPath + '\\';
+        } else {
+          rawPath = config.srcPath + '/raw/*';
+          outPath = config.outPath + '/';
+        }
+        if (winNotCygwin) {
+          command = ['xcopy', '/E', rawPath, outPath];
+        } else {
+          command = ['cp', '-Rnl', rawPath, outPath];
+        }
         docpad.log('debug', 'Copying raw directory');
         return balUtil.spawn(command, {
           output: true
         }, function(err) {
+          if (err) {
+            return next(err);
+          }
           docpad.log('debug', 'Copied raw directory');
           return next();
         });

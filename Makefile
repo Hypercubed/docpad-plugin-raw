@@ -5,5 +5,8 @@ dev:
 
 compile:
 	./node_modules/.bin/coffee -o out/ -c src/
+	
+test: compile
+	npm test
 
-.PHONY: dev compile
+.PHONY: dev compile test
