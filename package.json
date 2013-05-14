@@ -29,7 +29,8 @@
   },
   "dependencies": {
     "bal-util": "2.x",
-    "eachr": "~2.0.2"
+    "eachr": "~2.0.2",
+    "path": "~0.4.9"
   },
   "devDependencies": {
     "coffee-script": "~1.6.2"

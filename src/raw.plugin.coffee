@@ -1,7 +1,12 @@
-eachr = require('eachr')
+
 
 # Export Plugin
 module.exports = (BasePlugin) ->
+	# Requires
+	eachr = require('eachr')
+	path = require('path')
+	balUtil = require('bal-util')
+	
 	# Define Plugin
 	class raw extends BasePlugin
 		# Plugin name
@@ -12,37 +17,34 @@ module.exports = (BasePlugin) ->
 			# Prepare
 			docpad = @docpad
 			config = docpad.getConfig()
-			balUtil = require('bal-util')
 			
-			winNotCygwin = /win/.test(process.platform) && !/cygwin/.test(process.env.PATH)
+			WINDOWS = /win/.test(process.platform)
+			CYGWIN = /cygwin/.test(process.env.PATH)  # Cheap test!
+			XCOPY = WINDOWS && !CYGWIN
 			
-			# Set out directories
+			# Set out directory
 			# the trailing / indicates to cp that the files of this directory should be copied over
 			# rather than the directory itself
-			if winNotCygwin
-				outPath = config.outPath+'\\'
-			else
-				outPath = config.outPath+'/'
+			outPath = path.normalize "#{config.outPath}"
+			srcPath = path.normalize "#{config.srcPath}"
 			
 			config.plugins or= {}
 			config.plugins.raw or= {}
 			
-			config.plugins.raw.commands or= (if winNotCygwin
-				{ raw: ['xcopy', '/e', '/q'] }
+			config.plugins.raw.commands or= (if XCOPY
+				{ raw: ['xcopy', '/e', 'src\\raw\\*', 'out\\'] }
 			else
-				{ raw: ['cp', '-Rn'] } )
+				{ raw: ['cp', '-Rnl', 'src/raw/*', 'out/', ] } )
 			
 			eachr config.plugins.raw.commands, (command, key) ->
-				rawPath = config.srcPath + (if winNotCygwin
-					'\\'+key+'\\*'
-				else
-					'/'+key+'/*' )
+				command = command.map (part) ->
+					part.replace(/^out/, outPath).replace(/^src/, srcPath)
 				
-				command = command.concat([rawPath, outPath]);
+				#console.log(command)
 				
 				docpad.log('info', 'Copying '+key+' directory ['+command.join(' ')+']')
 				
-				balUtil.spawn command, {output:true}, (err) ->
+				balUtil.spawn command, {output:false}, (err) ->
 					return next(err)  if err
 					docpad.log('debug', 'Copied raw directory')
 					return next()
