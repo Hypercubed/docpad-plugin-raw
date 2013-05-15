@@ -20,7 +20,7 @@ make compile
 
 ```
 make test
-````
+```
 
 ## Configuration
 
