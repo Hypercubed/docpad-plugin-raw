@@ -1,13 +1,13 @@
 # Raw Files Plugin for [DocPad](http://docpad.org)
 Copies all files in the raw directory to out.  Useful for large files that cause out of memory error when placed in files directory.
 
-## Install  (pending)
+## Install
 
 ```
 npm install --save docpad-plugin-raw
 ```
 
-## Install (during dev)
+## Install for testing
 
 ```
 git clone https://github.com/Hypercubed/docpad-plugin-raw.git
@@ -24,7 +24,7 @@ make test
 
 ## Configuration
 
-You can change the cp command as follows:
+You can change the "cp" command as follows:
 
 ```
 # ...
