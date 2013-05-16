@@ -36,6 +36,19 @@ plugins:
 # ...
 ```
 
+`['cp', '-Rnl'...` will create hard links on unix-like systems.
+
+Another example tested in Windows/DOS:
+
+```
+# ...
+plugins:
+    raw:
+        commands:
+            raw: ['rsync', '-a', './src/raw/', './out/' ]
+# ...
+```
+
 ## License
 Licensed under the incredibly [permissive](http://en.wikipedia.org/wiki/Permissive_free_software_licence) [MIT License](http://creativecommons.org/licenses/MIT/)
 <br/>Copyright &copy; 2013+ J. Harshbarger

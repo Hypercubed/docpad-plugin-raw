@@ -34,7 +34,7 @@ module.exports = (BasePlugin) ->
 			config.plugins.raw.commands or= (if XCOPY
 				{ raw: ['xcopy', '/e', 'src\\raw\\*', 'out\\'] }
 			else
-				{ raw: ['cp', '-Rnl', 'src/raw/*', 'out/', ] } )
+				{ raw: ['cp', '-Rn', 'src/raw/*', 'out/', ] } )
 			
 			eachr config.plugins.raw.commands, (command, key) ->
 				command = command.map (part) ->
@@ -42,7 +42,7 @@ module.exports = (BasePlugin) ->
 				
 				#console.log(command)
 				
-				docpad.log('info', 'Copying '+key+' directory ['+command.join(' ')+']')
+				docpad.log('info', 'Copying '+key)
 				
 				balUtil.spawn command, {output:false}, (err) ->
 					return next(err)  if err

@@ -34,13 +34,13 @@
         (_base1 = config.plugins.raw).commands || (_base1.commands = (XCOPY ? {
           raw: ['xcopy', '/e', 'src\\raw\\*', 'out\\']
         } : {
-          raw: ['cp', '-Rnl', 'src/raw/*', 'out/']
+          raw: ['cp', '-Rn', 'src/raw/*', 'out/']
         }));
         return eachr(config.plugins.raw.commands, function(command, key) {
           command = command.map(function(part) {
             return part.replace(/^out/, outPath).replace(/^src/, srcPath);
           });
-          docpad.log('info', 'Copying ' + key + ' directory [' + command.join(' ') + ']');
+          docpad.log('info', 'Copying ' + key);
           return balUtil.spawn(command, {
             output: false
           }, function(err) {
