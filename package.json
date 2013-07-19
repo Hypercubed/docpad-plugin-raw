@@ -28,7 +28,7 @@
     "docpad": ">=6"
   },
   "dependencies": {
-    "bal-util": "2.x",
+    "bal-util": "~2.0",
     "eachr": "~2.0.2",
     "path": "~0.4.9"
   },
