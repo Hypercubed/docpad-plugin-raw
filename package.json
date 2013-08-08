@@ -1,6 +1,6 @@
 {
   "name": "docpad-plugin-raw",
-  "version": "0.1.3",
+  "version": "2.1.3",
   "description": "DocPad plugin that copies /raw directory to /out",
   "homepage": "https://github.com/hypercubed/docpad-plugin-raw",
   "keywords": [
@@ -33,7 +33,11 @@
     "path": "~0.4.9"
   },
   "devDependencies": {
-    "coffee-script": "~1.6.2"
+    "coffee-script": "~1.6.2",
+    "docpad": "~6.48.0",
+    "joe": "~1.2.0",
+    "joe-reporter-console": "~1.2.1",
+    "chai": "~1.7.2"
   },
   "main": "./out/raw.plugin.js",
   "scripts": {
