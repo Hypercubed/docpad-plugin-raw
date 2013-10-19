@@ -55,6 +55,19 @@ plugins:
 # ...
 ```
 
+An example reported to work on OSX:
+
+```
+plugins:
+  raw:
+    commands:
+      # rsync
+      # -r recursive
+      # -u skip file if the destination file is newer
+      # -l copy any links over as well
+      raw  : ['rsync', '-rul', 'src/raw/', 'out/' ]
+```
+
 ## License
 Licensed under the incredibly [permissive](http://en.wikipedia.org/wiki/Permissive_free_software_licence) [MIT License](http://creativecommons.org/licenses/MIT/)
 <br/>Copyright &copy; 2013+ J. Harshbarger
