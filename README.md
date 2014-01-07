@@ -30,42 +30,17 @@ make test
 
 ## Configuration
 
-You can change the "cp" command as follows:
+Set as many sources as you want. Path should be relative as in example below. The out folder specified in docpad.coffee is used for the destination
 
 ```
 # ...
 plugins:
     raw:
-        commands:
-            raw: ['cp', '-Rnl', 'src/raw/*', 'out/' ]
-			app: ['cp', '-Rn', 'src/app/*', 'out/' ]
+        raw:
+            src: './src/raw/'
+        app:
+            src: './src/app/'        
 # ...
-```
-
-`['cp', '-Rnl'...` will create hard links on unix-like systems.
-
-Another example tested in Windows/DOS:
-
-```
-# ...
-plugins:
-    raw:
-        commands:
-            raw: ['rsync', '-a', './src/raw/', './out/' ]
-# ...
-```
-
-An example reported to work on OSX:
-
-```
-plugins:
-  raw:
-    commands:
-      # rsync
-      # -r recursive
-      # -u skip file if the destination file is newer
-      # -l copy any links over as well
-      raw  : ['rsync', '-rul', 'src/raw/', 'out/' ]
 ```
 
 ## License
