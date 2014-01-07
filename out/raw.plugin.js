@@ -31,7 +31,7 @@
           config.plugins.raw["default"].src = './src/raw/';
         }
         return eachr(config.plugins.raw, function(target, key) {
-          var out, src;
+          var options, out, src;
           if (outPath.indexOf('./') === 0 && outPath.slice(-1) === '/') {
             out = outPath;
           }
@@ -50,9 +50,10 @@
           if (target.src.indexOf('./') !== 0) {
             src = target.src.indexOf('/') === 0 ? "" + target.src + "/" : "./" + target.src + "/";
           }
-          docpad.log("debug", "raw out: " + out + " and src: " + src);
           docpad.log("info", "Copying " + key);
-          return ncp(src, out, function(err) {
+          options = (target.options != null) && typeof target.options === 'object' ? target.options : {};
+          docpad.log("debug", "raw plugin info... out: " + out + ", src: " + src + ", options: " + (JSON.stringify(options)));
+          return ncp(src, out, options, function(err) {
             if (err) {
               docpad.log("warn", "Problem syncing " + key + ". Error: " + err);
               next();

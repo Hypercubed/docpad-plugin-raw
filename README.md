@@ -39,9 +39,26 @@ plugins:
         raw:
             src: './src/raw/'
         app:
-            src: './src/app/'        
+            src: './src/app/'
 # ...
 ```
+
+You can also specify copy options as specified by ncp package
+
+```
+# ...
+plugins:
+    raw:
+        raw:
+            src: './src/raw/'
+            options:
+                clobber: false
+# ...
+```
+
+## Deployment Notes
+
+Using ncp should make this plugin work on a wide variety of platforms and hosted platforms such as Heroku
 
 ## License
 Licensed under the incredibly [permissive](http://en.wikipedia.org/wiki/Permissive_free_software_licence) [MIT License](http://creativecommons.org/licenses/MIT/)
