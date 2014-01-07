@@ -4,8 +4,8 @@
 module.exports = (BasePlugin) ->
 	# Requires
 	eachr = require('eachr')
+	ncp = require('ncp')
 	path = require('path')
-	balUtil = require('bal-util')
 	
 	# Define Plugin
 	class raw extends BasePlugin
@@ -17,11 +17,7 @@ module.exports = (BasePlugin) ->
 			# Prepare
 			docpad = @docpad
 			config = docpad.getConfig()
-			
-			WINDOWS = /win/.test(process.platform)
-			CYGWIN = /cygwin/.test(process.env.PATH)  # Cheap test!
-			XCOPY = WINDOWS && !CYGWIN
-			
+
 			# Set out directory
 			# the trailing / indicates to cp that the files of this directory should be copied over
 			# rather than the directory itself
@@ -30,21 +26,41 @@ module.exports = (BasePlugin) ->
 			
 			config.plugins or= {}
 			config.plugins.raw or= {}
+
+			if Object.keys(config.plugins.raw).length is 0
+				config.plugins.raw.default = {}
+				config.plugins.raw.default.src = './src/raw/'
 			
-			config.plugins.raw.commands or= (if XCOPY
-				{ raw: ['xcopy', '/e', 'src\\raw\\*', 'out\\'] }
-			else
-				{ raw: ['cp', '-Rn', 'src/raw/*', 'out/', ] } )
-			
-			eachr config.plugins.raw.commands, (command, key) ->
-				command = command.map (part) ->
-					part.replace(/^out/, outPath).replace(/^src/, srcPath)
+			eachr config.plugins.raw, (target, key) ->
+				if outPath.indexOf('./') is 0 and outPath.slice(-1) is '/'
+					out = outPath
+
+				if outPath.slice(-1) isnt '/' 
+					out = "#{outPath}/"
+
+				if outPath.indexOf('./') isnt 0
+					out = if outPath.indexOf('/') is 0 then "#{outPath}/" else "./#{outPath}/"
+
+				if target.src.indexOf('./') is 0 and target.src.slice(-1) is '/'
+					src = target.src
+
+				if target.src.slice(-1) isnt '/' 
+					src = "#{target.src}/"
+
+				if target.src.indexOf('./') isnt 0
+					src = if target.src.indexOf('/') is 0 then "#{target.src}/" else "./#{target.src}/"
 				
-				#console.log(command)
+				docpad.log "debug", "raw out: #{out} and src: #{src}"
 				
-				docpad.log('info', 'Copying '+key)
+				docpad.log "info", "Copying #{key}"
+
+				ncp src, out, (err) ->
+					if (err)
+						docpad.log "warn", "Problem syncing #{key}. Error: #{err}"
+						next()
+					docpad.log "info", "Done copying #{key}"
+					next()					
+
 				
-				balUtil.spawn command, {output:false}, (err) ->
-					return next(err)  if err
-					docpad.log('debug', 'Copied raw directory')
-					return next()
+				
+				
