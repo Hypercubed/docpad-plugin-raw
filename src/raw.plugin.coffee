@@ -29,40 +29,23 @@ module.exports = (BasePlugin) ->
 
 			if Object.keys(config.plugins.raw).length is 0
 				config.plugins.raw.default = {}
-				config.plugins.raw.default.src = './src/raw/'
+				config.plugins.raw.default.src = 'raw'
 
 			eachr config.plugins.raw, (target, key) ->
-				if outPath.indexOf('./') is 0 and outPath.slice(-1) is '/'
-					out = outPath
-
-				if outPath.slice(-1) isnt '/'
-					out = "#{outPath}/"
-
-				if outPath.indexOf('./') isnt 0
-					out = if outPath.indexOf('/') is 0 then "#{outPath}/" else "./#{outPath}/"
-
-				if target.src.indexOf('./') is 0 and target.src.slice(-1) is '/'
-					src = target.src
-
-				if target.src.slice(-1) isnt '/'
-					src = "#{target.src}/"
-
-				if target.src.indexOf('./') isnt 0
-					src = if target.src.indexOf('/') is 0 then "#{target.src}/" else "./#{target.src}/"
+				# Construct the source path.
+				src = path.join srcPath, target.src
 
 				docpad.log "info", "Copying #{key}"
 
 				# Use ncp settings if specified
 				options = if target.options? and typeof target.options is 'object' then target.options else {}
 
-				docpad.log "debug", "raw plugin info... out: #{out}, src: #{src}, options: #{JSON.stringify(options)}"
+				docpad.log "debug", "raw plugin info... out: #{outPath}, src: #{src}, options: #{JSON.stringify(options)}"
 
-				ncp src, out, options, (err) ->
-					if (err)
-						docpad.log "warn", "Problem syncing #{key}. Error: #{err}"
-						next()
+				ncp src, outPath, options, (err) ->
+					return next(err) if err
 					docpad.log "info", "Done copying #{key}"
-					next()
+					return next()
 
 
 
