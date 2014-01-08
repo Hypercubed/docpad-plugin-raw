@@ -4,9 +4,10 @@
     __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
 
   module.exports = function(BasePlugin) {
-    var eachr, ncp, path, raw, _ref;
+    var balUtil, eachr, ncp, path, raw, _ref;
     eachr = require('eachr');
     ncp = require('ncp');
+    balUtil = require('bal-util');
     path = require('path');
     return raw = (function(_super) {
       __extends(raw, _super);
@@ -31,18 +32,37 @@
           config.plugins.raw["default"].src = 'raw';
         }
         return eachr(config.plugins.raw, function(target, key) {
-          var options, src;
-          src = path.join(srcPath, target.src);
+          var CYGWIN, WINDOWS, XCOPY, command, options, src;
           docpad.log("info", "Copying " + key);
-          options = (target.options != null) && typeof target.options === 'object' ? target.options : {};
-          docpad.log("debug", "raw plugin info... out: " + outPath + ", src: " + src + ", options: " + (JSON.stringify(options)));
-          return ncp(src, outPath, options, function(err) {
-            if (err) {
-              return next(err);
-            }
-            docpad.log("info", "Done copying " + key);
-            return next();
-          });
+          if (target.command) {
+            WINDOWS = /win/.test(process.platform);
+            CYGWIN = /cygwin/.test(process.env.PATH);
+            XCOPY = WINDOWS && !CYGWIN;
+            target.command || (target.command = ['xcopy', '/e', 'src\\raw\\*', 'out\\']);
+            command = target.command.map(function(part) {
+              return part.replace(/^out/, outPath).replace(/^src/, srcPath);
+            });
+            return balUtil.spawn(command, {
+              output: false
+            }, function(err) {
+              if (err) {
+                return next(err);
+              }
+              docpad.log('debug', "Copied raw directory");
+              return next();
+            });
+          } else {
+            src = path.join(srcPath, target.src);
+            options = (target.options != null) && typeof target.options === 'object' ? target.options : {};
+            docpad.log('debug', "raw plugin info... out: " + outPath + ", src: " + src + ", options: " + (JSON.stringify(options)));
+            return ncp(src, outPath, options, function(err) {
+              if (err) {
+                return next(err);
+              }
+              docpad.log('debug', "Done copying " + key);
+              return next();
+            });
+          }
         });
       };
 

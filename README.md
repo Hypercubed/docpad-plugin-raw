@@ -29,8 +29,9 @@ make test
 ```
 
 ## Configuration
+Set as many sources as you want. Path should be relative to the `src` directory. The out folder specified in docpad.coffee is used for the destination.
 
-Set as many sources as you want. Path should be relative to the `src` directory. The out folder specified in docpad.coffee is used for the destination
+If no configuration is specified, defaults to `raw` folder
 
 ```
 # ...
@@ -53,6 +54,17 @@ plugins:
             src: 'raw'
             options:
                 clobber: false
+# ...
+```
+
+If you would rather use a shell command
+
+```
+# ...
+plugins:
+    raw:
+        raw:
+            command: ['rsync', '-a', './src/raw/', './out/']
 # ...
 ```
 

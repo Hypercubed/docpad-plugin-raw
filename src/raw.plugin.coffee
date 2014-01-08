@@ -5,6 +5,7 @@ module.exports = (BasePlugin) ->
 	# Requires
 	eachr = require('eachr')
 	ncp = require('ncp')
+	balUtil = require('bal-util')
 	path = require('path')
 
 	# Define Plugin
@@ -32,21 +33,34 @@ module.exports = (BasePlugin) ->
 				config.plugins.raw.default.src = 'raw'
 
 			eachr config.plugins.raw, (target, key) ->
-				# Construct the source path.
-				src = path.join srcPath, target.src
-
 				docpad.log "info", "Copying #{key}"
 
-				# Use ncp settings if specified
-				options = if target.options? and typeof target.options is 'object' then target.options else {}
+				# Use command if specified instead of ncp
+				if target.command
+					WINDOWS = /win/.test(process.platform)
+					CYGWIN = /cygwin/.test(process.env.PATH)  # Cheap test!
+					XCOPY = WINDOWS && !CYGWIN
 
-				docpad.log "debug", "raw plugin info... out: #{outPath}, src: #{src}, options: #{JSON.stringify(options)}"
+					target.command or= ['xcopy', '/e', 'src\\raw\\*', 'out\\']
 
-				ncp src, outPath, options, (err) ->
-					return next(err) if err
-					docpad.log "info", "Done copying #{key}"
-					return next()
+					command = target.command.map (part) ->
+						part.replace(/^out/, outPath).replace(/^src/, srcPath)
 
+					balUtil.spawn command, {output:false}, (err) ->
+						return next(err) if err
+						docpad.log 'debug', "Copied raw directory"
+						return next()
 
+				# Otherwise use ncp by default
+				else
+					src = path.join srcPath, target.src
 
+					# Use ncp settings if specified
+					options = if target.options? and typeof target.options is 'object' then target.options else {}
 
+					docpad.log 'debug', "raw plugin info... out: #{outPath}, src: #{src}, options: #{JSON.stringify(options)}"
+
+					ncp src, outPath, options, (err) ->
+						return next(err) if err
+						docpad.log 'debug', "Done copying #{key}"
+						return next()
