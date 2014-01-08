@@ -28,35 +28,17 @@
         (_base = config.plugins).raw || (_base.raw = {});
         if (Object.keys(config.plugins.raw).length === 0) {
           config.plugins.raw["default"] = {};
-          config.plugins.raw["default"].src = './src/raw/';
+          config.plugins.raw["default"].src = 'raw';
         }
         return eachr(config.plugins.raw, function(target, key) {
-          var options, out, src;
-          if (outPath.indexOf('./') === 0 && outPath.slice(-1) === '/') {
-            out = outPath;
-          }
-          if (outPath.slice(-1) !== '/') {
-            out = "" + outPath + "/";
-          }
-          if (outPath.indexOf('./') !== 0) {
-            out = outPath.indexOf('/') === 0 ? "" + outPath + "/" : "./" + outPath + "/";
-          }
-          if (target.src.indexOf('./') === 0 && target.src.slice(-1) === '/') {
-            src = target.src;
-          }
-          if (target.src.slice(-1) !== '/') {
-            src = "" + target.src + "/";
-          }
-          if (target.src.indexOf('./') !== 0) {
-            src = target.src.indexOf('/') === 0 ? "" + target.src + "/" : "./" + target.src + "/";
-          }
+          var options, src;
+          src = path.join(srcPath, target.src);
           docpad.log("info", "Copying " + key);
           options = (target.options != null) && typeof target.options === 'object' ? target.options : {};
-          docpad.log("debug", "raw plugin info... out: " + out + ", src: " + src + ", options: " + (JSON.stringify(options)));
-          return ncp(src, out, options, function(err) {
+          docpad.log("debug", "raw plugin info... out: " + outPath + ", src: " + src + ", options: " + (JSON.stringify(options)));
+          return ncp(src, outPath, options, function(err) {
             if (err) {
-              docpad.log("warn", "Problem syncing " + key + ". Error: " + err);
-              next();
+              return next(err);
             }
             docpad.log("info", "Done copying " + key);
             return next();

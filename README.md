@@ -30,16 +30,16 @@ make test
 
 ## Configuration
 
-Set as many sources as you want. Path should be relative as in example below. The out folder specified in docpad.coffee is used for the destination
+Set as many sources as you want. Path should be relative to the `src` directory. The out folder specified in docpad.coffee is used for the destination
 
 ```
 # ...
 plugins:
     raw:
         raw:
-            src: './src/raw/'
+            src: 'raw'
         app:
-            src: './src/app/'
+            src: 'app'
 # ...
 ```
 
@@ -50,7 +50,7 @@ You can also specify copy options as specified by ncp package
 plugins:
     raw:
         raw:
-            src: './src/raw/'
+            src: 'raw'
             options:
                 clobber: false
 # ...
