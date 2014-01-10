@@ -1,6 +1,6 @@
 {
   "name": "docpad-plugin-raw",
-  "version": "2.1.3",
+  "version": "2.2.1",
   "description": "DocPad plugin that copies /raw directory to /out",
   "homepage": "https://github.com/hypercubed/docpad-plugin-raw",
   "keywords": [
