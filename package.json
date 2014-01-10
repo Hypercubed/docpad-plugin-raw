@@ -14,7 +14,9 @@
   ],
   "contributors": [
     "J. Harshbarger <> (https://github.com/hypercubed)",
-    "Benjamin Lupton <b@lupton.cc> (https://github.com/balupton)"
+    "Benjamin Lupton <b@lupton.cc> (https://github.com/balupton)",
+    "Marcus Stong <stongo@gmail.com> (https://github.com/stongo)",
+    "Rob Loach <robloach@gmail.com> (http://robloach.net)"
   ],
   "bugs": {
     "url": "https://github.com/hypercubed/docpad-plugin-raw/issues"
@@ -28,6 +30,7 @@
     "docpad": ">=6"
   },
   "dependencies": {
+    "ncp": "~0.5.0",
     "bal-util": "~2.0",
     "eachr": "~2.0.2",
     "path": "~0.4.9"

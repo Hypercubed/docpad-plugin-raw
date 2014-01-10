@@ -29,44 +29,48 @@ make test
 ```
 
 ## Configuration
+Set as many sources as you want. Path should be relative to the `src` directory. The out folder specified in docpad.coffee is used for the destination.
 
-You can change the "cp" command as follows:
-
-```
-# ...
-plugins:
-    raw:
-        commands:
-            raw: ['cp', '-Rnl', 'src/raw/*', 'out/' ]
-			app: ['cp', '-Rn', 'src/app/*', 'out/' ]
-# ...
-```
-
-`['cp', '-Rnl'...` will create hard links on unix-like systems.
-
-Another example tested in Windows/DOS:
+If no configuration is specified, defaults to `raw` folder
 
 ```
 # ...
 plugins:
     raw:
-        commands:
-            raw: ['rsync', '-a', './src/raw/', './out/' ]
+        raw:
+            src: 'raw'
+        app:
+            src: 'app'
 # ...
 ```
 
-An example reported to work on OSX:
+You can also specify copy options as specified by ncp package
 
 ```
+# ...
 plugins:
-  raw:
-    commands:
-      # rsync
-      # -r recursive
-      # -u skip file if the destination file is newer
-      # -l copy any links over as well
-      raw  : ['rsync', '-rul', 'src/raw/', 'out/' ]
+    raw:
+        raw:
+            src: 'raw'
+            options:
+                clobber: false
+# ...
 ```
+
+If you would rather use a shell command
+
+```
+# ...
+plugins:
+    raw:
+        raw:
+            command: ['rsync', '-a', './src/raw/', './out/']
+# ...
+```
+
+## Deployment Notes
+
+Using ncp should make this plugin work on a wide variety of platforms and hosted platforms such as Heroku
 
 ## License
 Licensed under the incredibly [permissive](http://en.wikipedia.org/wiki/Permissive_free_software_licence) [MIT License](http://creativecommons.org/licenses/MIT/)
